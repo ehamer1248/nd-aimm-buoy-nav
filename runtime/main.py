@@ -23,6 +23,8 @@ from engine import *
 
 def main():
     
+    pwm1, pwm2 = setup()  # Setup GPIO and PWM for motor control
+    
     results_queue = Queue()
     stop_event = threading.Event()
     
