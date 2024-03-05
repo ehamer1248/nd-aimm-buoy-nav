@@ -8,10 +8,11 @@ from queue import Queue, Empty
 import threading
 from ultralytics import YOLO  
 from calc import HostSpatialsCalc
+from navigation import results_consumer
 
 # System Call
 
-from runtime.utility import *
+from utility import *
 from camera import *
 from engine import *
 
@@ -44,7 +45,7 @@ def main():
         print(f"Less than {min_devices_required} devices found after retrying, exiting.")
         sys.exit(0)
 
-    model_paths = ['/home/ndaimm/ndaimm/onhost/custom1.pt', '/home/ndaimm/ndaimm/onhost/custom2.pt']
+    model_paths = ['/home/ndaimm/ndaimm/ND-AIMM/models/n/custom1.pt', '/home/ndaimm/ndaimm/ND-AIMM/models/n/custom2.pt']
     threads = []
 
     for i, deviceInfo in enumerate(deviceInfos):
