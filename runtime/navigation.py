@@ -72,23 +72,27 @@ def calculate_bearing(current_lat, current_lon, target_lat, target_lon):
 
 def determine_turn_direction(current_heading, target_bearing):
     """
-    Determines whether to turn left or right based on the current heading and target bearing.
+    Determines whether to turn left or right based on the current heading and target bearing, considering the shortest path.
 
     :returns: 'left', 'right', or 'forward'
     """
     # Calculate the difference between the current heading and the target bearing
     diff = target_bearing - current_heading
 
-    # Normalize the difference to the range -180 to 180
-    diff = (diff + 180) % 360 - 180
+    # Normalize the difference to the range 0 to 360
+    diff = diff % 360
 
-    # Determine the turn direction
-    if abs(diff) < 10:  # If the difference is small, go forward
+    # Determine the turn direction based on the shortest path
+    if abs(diff) < 10 or abs(diff) > 350:  # If the difference is small, go forward
         return 'forward'
-    elif diff > 0:
-        return 'right'
-    else:
+    elif diff > 180:
         return 'left'
+    else:
+        return 'right'
+    
+########################
+# Movement Call Block
+######################## 
 
 def navigate_to_target(target_lat, target_lon, pwm1, pwm2):
     """
@@ -118,31 +122,29 @@ def navigate_to_target(target_lat, target_lon, pwm1, pwm2):
     # Return the navigation instruction
     return turn_direction
 
-def results_consumer(results_queue, stop_event, target_lat, target_lon):
-    
-    while not stop_event.is_set():
-        # Check for new results and process them if available
-        try:
-            result = results_queue.get(timeout=0.1)
-            print(result)
-            # process_result(result)  # Process each result to track and adjust based on buoys
-        except Empty:
-            pass
-        
-        ###################
-        # Actual Control
-        ###################
-        
-        
-        
-        # Update navigation instructions based on the latest GPS and heading
-        turn_direction = navigate_to_target(target_lat, target_lon, 50, 50)
-        
-        # Pass the turn direction to control motors
-        control_motors(50, 50, turn_direction)
 
-        # Add a short sleep to prevent this loop from consuming too much CPU
-        time.sleep(0.1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
 # def adjust_course(buoy_position, buoy_color):
 #     """

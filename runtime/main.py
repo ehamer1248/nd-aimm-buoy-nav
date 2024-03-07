@@ -8,7 +8,7 @@ from queue import Queue, Empty
 import threading
 from ultralytics import YOLO  
 from calc import HostSpatialsCalc
-from navigation import results_consumer
+from consumer import results_consumer
 
 # System Call
 
@@ -23,7 +23,7 @@ from engine import *
 
 def main():
     
-    pwm1, pwm2 = setup()  # Setup GPIO and PWM for motor control
+    #pwm1, pwm2 = setup()  # Setup GPIO and PWM for motor control
     
     results_queue = Queue()
     stop_event = threading.Event()
@@ -57,7 +57,7 @@ def main():
         t.start()
         threads.append(t)
         
-    consumer_thread = threading.Thread(target=results_consumer, args=(results_queue, stop_event))
+    consumer_thread = threading.Thread(target=results_consumer, args=(results_queue, stop_event, 5, 5))
     consumer_thread.start()
 
     for t in threads:
