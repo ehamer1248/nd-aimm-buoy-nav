@@ -108,6 +108,8 @@ def navigate_to_target(target_lat, target_lon, pwm1, pwm2):
     # Calculate the distance to the target
     distance_to_target = haversine_distance(current_lat, current_lon, target_lat, target_lon)
 
+    target_coordinate_list
+
     # Check if within 5-10ft (1.5-3 meters approximately) of the target
     if distance_to_target <= 3:
         control_motors(pwm1, pwm2, 'stop')

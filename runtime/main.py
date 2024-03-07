@@ -9,6 +9,7 @@ import threading
 from ultralytics import YOLO  
 from calc import HostSpatialsCalc
 from consumer import results_consumer
+from enes import PrintEnes
 
 # System Call
 
@@ -24,6 +25,8 @@ from engine import *
 def main():
     
     #pwm1, pwm2 = setup()  # Setup GPIO and PWM for motor control
+
+    PrintEnes()
     
     results_queue = Queue()
     stop_event = threading.Event()
