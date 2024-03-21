@@ -7,22 +7,24 @@ baudrate = 115200
 
 # Function to read GPS data using ublox_gps
 def read_gps_data_ublox():
-    with serial.Serial(port, baudrate=baudrate, timeout=1) as ser:
-        gps = UbloxGps(ser)
-        try:
-            geo = gps.geo_coords()
-            latitude = geo.lat
-            longitude = geo.lon
-            
-            veh = gps.veh_attitude()
-            roll = veh.roll
-            pitch = veh.pitch
-            heading = veh.heading
-            accRoll = veh.accRoll
-            accPitch = veh.accPitch
-            accHeading = veh.accHeading
-            return latitude, longitude, heading, accHeading
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return None, None
-
+    try:
+        with serial.Serial(port, baudrate=baudrate, timeout=1) as ser:
+            gps = UbloxGps(ser)
+            try:
+                geo = gps.geo_coords()
+                latitude = geo.lat
+                longitude = geo.lon
+                veh = gps.veh_attitude()
+                roll = veh.roll
+                pitch = veh.pitch
+                heading = veh.heading
+                accRoll = veh.accRoll
+                accPitch = veh.accPitch
+                accHeading = veh.accHeading
+                return latitude, longitude, heading, accHeading
+            except Exception as e:
+                print(f"An error occurred while reading GPS data: {e}")
+                return None, None, None, None
+    except serial.SerialException as e:
+        print(f"An error occurred while opening the serial port: {e}")
+        return None, None, None, None

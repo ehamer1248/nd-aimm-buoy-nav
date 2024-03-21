@@ -9,13 +9,13 @@ import threading
 from ultralytics import YOLO  
 from calc import HostSpatialsCalc
 from consumer import results_consumer
-from enes import PrintEnes
 
 # System Call
 
 from utility import *
 from camera import *
 from engine import *
+from relays import set_relay_state
 
                                 
 ########################
@@ -26,7 +26,8 @@ def main():
     
     #pwm1, pwm2 = setup()  # Setup GPIO and PWM for motor control
 
-    PrintEnes()
+
+    set_relay_state(1, True)
     
     results_queue = Queue()
     stop_event = threading.Event()
@@ -60,7 +61,7 @@ def main():
         t.start()
         threads.append(t)
         
-    consumer_thread = threading.Thread(target=results_consumer, args=(results_queue, stop_event, 5, 5))
+    consumer_thread = threading.Thread(target=results_consumer, args=(results_queue, stop_event))
     consumer_thread.start()
 
     for t in threads:
