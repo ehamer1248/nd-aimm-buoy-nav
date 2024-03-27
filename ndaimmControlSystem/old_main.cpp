@@ -8,47 +8,6 @@
 #define PWM1_PIN 10
 #define PWM2_PIN 11
 
-void runMotorTest() {
-  // Test forward movement
-  Serial.println("Testing forward movement...");
-  digitalWrite(DIR1_PIN, HIGH);
-  digitalWrite(DIR2_PIN, HIGH);
-  analogWrite(PWM1_PIN, 128);
-  analogWrite(PWM2_PIN, 128);
-  delay(2000);
-
-  // Test left turn
-  Serial.println("Testing left turn...");
-  digitalWrite(DIR1_PIN, LOW);
-  digitalWrite(DIR2_PIN, HIGH);
-  analogWrite(PWM1_PIN, 128);
-  analogWrite(PWM2_PIN, 128);
-  delay(2000);
-
-  // Test right turn
-  Serial.println("Testing right turn...");
-  digitalWrite(DIR1_PIN, HIGH);
-  digitalWrite(DIR2_PIN, LOW);
-  analogWrite(PWM1_PIN, 128);
-  analogWrite(PWM2_PIN, 128);
-  delay(2000);
-
-  // Test braking
-  Serial.println("Testing braking...");
-  digitalWrite(DIR1_PIN, LOW);
-  digitalWrite(DIR2_PIN, LOW);
-  analogWrite(PWM1_PIN, 255);
-  analogWrite(PWM2_PIN, 255);
-  delay(3000);
-
-  // Stop the motors
-  Serial.println("Motor test completed. Stopping motors...");
-  digitalWrite(DIR1_PIN, LOW);
-  digitalWrite(DIR2_PIN, LOW);
-  analogWrite(PWM1_PIN, 0);
-  analogWrite(PWM2_PIN, 0);
-}
-
 void setup() {
   // Initialize the direction pins as outputs
   pinMode(DIR1_PIN, OUTPUT);
@@ -66,7 +25,6 @@ void setup() {
 
   // Initialize serial communication
   Serial.begin(9600);
-
 }
 
 void loop() {

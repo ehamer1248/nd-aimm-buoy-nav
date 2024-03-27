@@ -12,6 +12,8 @@ from calc import HostSpatialsCalc
 from math import radians, sin, cos, sqrt, atan2, degrees
 from engine import control_motors
 from gps import read_gps_data_ublox
+from heading import BNO085Heading
+
 
 ########################
 # Navitation Block
@@ -95,6 +97,9 @@ def determine_turn_direction(current_heading, target_bearing):
 ######################## 
 
 def navigate_to_target(target_lat, target_lon, pwm1, pwm2):
+    
+    bno085_heading = BNO085Heading()
+     
     """
     Navigates from the current location to the target location by polling the current GPS coordinates
     and heading, and adjusting the heading accordingly.
@@ -103,7 +108,10 @@ def navigate_to_target(target_lat, target_lon, pwm1, pwm2):
     :param target_lon: Target longitude
     :returns: Navigation instruction ('left', 'right', or 'forward')
     """
-    current_lat, current_lon, current_head, current_accHeading = read_gps_data_ublox()  # Poll the current GPS coordinates
+    current_lat, current_lon = read_gps_data_ublox()  # Poll the current GPS coordinates
+    
+    current_head = BNO085Heading.read_heading()
+    print(f"Current Heading: {current_head}")
     
     # Calculate the distance to the target
     distance_to_target = haversine_distance(current_lat, current_lon, target_lat, target_lon)

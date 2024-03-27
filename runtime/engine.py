@@ -5,7 +5,7 @@ def control_motors(pwm1_speed, pwm2_speed, command):
     # Hardcoded serial port details
     port = '/dev/ttyACM0'  # Serial port
     baudrate = 9600        # Baud rate
-    timeout = 1            # Timeout in seconds
+    timeout = 5            # Timeout in seconds
 
     # Attempt to establish serial connection
     try:
@@ -13,8 +13,8 @@ def control_motors(pwm1_speed, pwm2_speed, command):
         ser.flush()
 
         # Ensure speeds are within a valid range, e.g., 0-100
-        pwm1_speed = max(0, min(100, pwm1_speed))
-        pwm2_speed = max(0, min(100, pwm2_speed))
+        pwm1_speed = max(0, min(255, pwm1_speed))
+        pwm2_speed = max(0, min(255, pwm2_speed))
 
         if command in ['forward', 'left', 'right', 'stop', 'brake']:
             # Construct the command string including direction and speeds
@@ -31,5 +31,6 @@ def control_motors(pwm1_speed, pwm2_speed, command):
         if 'ser' in locals() and ser.is_open:
             ser.close()
 
-control_motors(180, 180, 'forward')
-time.sleep(5)
+control_motors(70, 70, 'forward')
+time.sleep(10)
+control_motors(0, 0, 'stop')
