@@ -2,9 +2,15 @@ from queue import Queue, Empty
 from navigation import *
 from relays import set_relay_state
 import time
-
+from 
 def results_consumer(results_queue, stop_event):
     key_tracker = 0
+    buoy_check = 0
+    direction = 0
+    buoy_dict = {
+        'green': 0,
+        'red':   0,
+    }
     target_coordinates_dict = {
         'slalom1': [-85.02268076017542, 41.70198248307769],
         'slalom2': [-85.030625496285012, 41.71635825730074],
@@ -45,10 +51,41 @@ def results_consumer(results_queue, stop_event):
         # Check for new results and process them if available
         try:
             result = results_queue.get(timeout=0.1)
-            print(result)
+            buoy_check = 1
             # process_result(result) # Process each result to track and adjust based on buoys
         except Empty:
+            buoy_check = 0
             pass
+
+        
+        if buoy_check == 1:
+            x = result['spatials']['x']
+            y = result['spatials']['y']
+            z = result['spatials']['z']
+
+            depth = sqrt(sqrt((x**2) + (y**2) + (z**2)))
+
+            if result['class_name'] == 'green_buoy':
+                buoy_dict['green'] = depth
+            else:
+                buoy_dict['red'] = depth
+
+            if abs(buoy_dict['green'] - buoy_dict['red']) < 2:
+                control_motors(5,5,'forward')
+            elif buoy_dict['green'] > buoy_dict['red']:
+                control_motors(5,5,'left')
+                time.sleep(2)
+                control_motors(5,5,'forward') 
+                time.sleep(5)
+            elif buoy_dict['green'] < buoy_dict['red']:
+                control_motors(5,5,'right')
+                time.sleep(2)
+                control_motors(5,5,'forward') 
+                time.sleep(5)
+                
+            continue
+
+            
 
         ###################
         # Actual Control

@@ -1,4 +1,5 @@
 import math
+from math import sqrt
 import numpy as np
 import depthai as dai
 
@@ -67,3 +68,6 @@ class HostSpatialsCalc:
             'y': -averageDepth * math.tan(angle_y)
         }
         return spatials, centroid
+    def calc_depth(x,y,z):
+        depth = sqrt((x**2) + (y**2) + (z**2))
+        return depth
